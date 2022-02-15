@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Versions -->
-        <spark.version>3.0.1</spark.version>
+        <spark.version>3.2.1</spark.version>
 
         <!-- Build -->
         <maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>

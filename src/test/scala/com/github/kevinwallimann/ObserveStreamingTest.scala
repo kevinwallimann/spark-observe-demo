@@ -29,7 +29,7 @@ class ObserveStreamingTest extends FlatSpec with Matchers with SparkTestBase {
           println(s"Checkpoint 1 crc32: ${row.getAs[Long]("crc32")}")
         })
         Option(event.progress.observedMetrics.get("checkpoint2")).foreach(row => {
-          println(s"Checkpoint 1 listCollect: ${row.getAs[Seq[Int]]("listCollect")}")
+          println(s"Checkpoint 2 listCollect: ${row.getAs[Seq[Int]]("listCollect")}")
           println(s"Checkpoint 2 rowCount: ${row.getAs[Long]("rowCount")}")
           println(s"Checkpoint 2 sum: ${row.getAs[Long]("sum")}")
           println(s"Checkpoint 2 sumAbs: ${row.getAs[Long]("sumAbs")}")
@@ -49,7 +49,8 @@ class ObserveStreamingTest extends FlatSpec with Matchers with SparkTestBase {
       .add("key", IntegerType, nullable = true)
       .add("value", IntegerType, nullable = true)
 
-    val collectListDeterministic = new Column(CollectListDeterministic(col("key").expr).toAggregateExpression(isDistinct = false))
+    val collectListDeterministic = new Column(CollectListDeterministic(col("key").expr)
+      .toAggregateExpression(isDistinct = false))
     val input = MemoryStream[Row](42, spark.sqlContext)(RowEncoder(schemaCatalyst))
     val df = input.toDF().
       withColumn("crc32value", crc32(col("value").cast("String"))).
